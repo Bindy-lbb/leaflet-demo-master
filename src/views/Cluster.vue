@@ -15,13 +15,14 @@ export default {
   mounted() {
     this.map = this.$utils.map.createMap("map-container", {
       maxZoom: 18,
+      crs: L.CRS.Baidu,
     });
 
     // L.control.layers(L.tileLayer.baidu({ layer: "vec" }).addTo(map));
     // this.$utils.map.createTileLayer(this.map, this.OSMUrl, {});
     this.$utils.map.createControlLayers(this.map);
 
-    this.map.setView([51.505, -0.09], 13);
+    this.map.setView([30.25308298, 120.2155118], 13);
 
     let cluster = this.$utils.map.createMakerCluster();
     for (let i = 0; i < 200; i++) {

@@ -7,9 +7,15 @@ require('proj4')
 require('proj4leaflet')
 const L = require('leaflet')
 
+// 本地百度地图离线瓦片地图
+const titleD = '/map/{z}/{x}/{y}.png'
+var urlPath = titleD
+
 //请引入 proj4.js 和 proj4leaflet.js
 // 坐标转换
-L.CRS.Baidu = new L.Proj.CRS('EPSG:900913', '+proj=merc +a=6378206 +b=6356584.314245179 +lat_ts=0.0 +lon_0=0.0 +x_0=0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext  +no_defs', {
+L.CRS.Baidu = new L.Proj.CRS('EPSG:900913', '+proj=merc +a=6378206 +b=6356584.314245179 +lat_ts=0.0 +lon_0=0.0 +x_0=0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext  +no_defs'
+    ,
+    {
     resolutions: function () {
        const level = 19
         var res = [];
@@ -32,10 +38,19 @@ L.tileLayer.baidu = function (option) {
         //单图层
         case "vec":
         default:
-            //'http://online{s}.map.bdimg.com/tile/?qt=tile&x={x}&y={y}&z={z}&styles=pl&b=0&limit=60&scaler=1&udt=20170525'
-            layer = L.tileLayer('http://online{s}.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles=' + (option.bigfont ? 'ph' : 'pl') + '&scaler=1&p=1', {
-                name:option.name,subdomains: subdomains, tms: true
-            });
+            // 加载线上地图
+            // layer = L.tileLayer('http://online{s}.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles=' + (option.bigfont ? 'ph' : 'pl') + '&scaler=1&p=1', {
+            //     // subdomains 瓦片服务的子域
+            //     name:option.name,subdomains: subdomains, tms: true
+            // });
+
+            // 加载本地地图
+            layer = L.tileLayer(urlPath, {
+                name: option.name,
+                subdomains: subdomains,
+                tms: true,
+              })
+
             break;
         case "img_d":
             layer = L.tileLayer('http://shangetu{s}.map.bdimg.com/it/u=x={x};y={y};z={z};v=009;type=sate&fm=46', {
